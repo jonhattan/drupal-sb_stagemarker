@@ -1,0 +1,31 @@
+diff --git a/includes/cache.inc b/includes/cache.inc
+index 1e70960..fda7580 100644
+--- a/includes/cache.inc
++++ b/includes/cache.inc
+@@ -13,6 +13,8 @@
+  *   @see cache_set()
+  */
+ function cache_get($cid, $table = 'cache') {
++  if (function_exists('sb_stagemarker_message')) sb_stagemarker_message("CACHE GET - table $table, cid $cid");
++
+   global $user;
+ 
+   // Garbage collection necessary when enforcing a minimum cache lifetime
+@@ -103,6 +105,8 @@ function cache_get($cid, $table = 'cache') {
+  *   @see cache_get()
+  */
+ function cache_set($cid, $data, $table = 'cache', $expire = CACHE_PERMANENT, $headers = NULL) {
++  if (function_exists('sb_stagemarker_message')) sb_stagemarker_message("CACHE SET - table:$table, cid:$cid");
++
+   $serialized = 0;
+   if (is_object($data) || is_array($data)) {
+     $data = serialize($data);
+@@ -134,6 +138,8 @@ function cache_set($cid, $data, $table = 'cache', $expire = CACHE_PERMANENT, $he
+  *   TRUE and $cid is '*' then the entire table $table is emptied.
+  */
+ function cache_clear_all($cid = NULL, $table = NULL, $wildcard = FALSE) {
++  if (function_exists('sb_stagemarker_message')) sb_stagemarker_message("CACHE CLEAR ALL - table:$table, cid:$cid");
++
+   global $user;
+ 
+   if (!isset($cid) && !isset($table)) {

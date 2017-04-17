@@ -1,0 +1,56 @@
+diff --git a/includes/bootstrap.inc b/includes/bootstrap.inc
+index a28bc2f..b1654cc 100644
+--- a/includes/bootstrap.inc
++++ b/includes/bootstrap.inc
+@@ -1526,6 +1526,8 @@ function _drupal_bootstrap($phase) {
+       break;
+ 
+     case DRUPAL_BOOTSTRAP_ACCESS:
++      if (function_exists('sb_stagemarker_message')) sb_stagemarker_message('BEFORE DRUPAL_BOOTSTRAP_ACCESS');
++
+       // Deny access to hosts which were banned - t() is not yet available.
+       if (drupal_is_denied('host', ip_address())) {
+         header($_SERVER['SERVER_PROTOCOL'] .' 403 Forbidden');
+@@ -1535,11 +1537,15 @@ function _drupal_bootstrap($phase) {
+       break;
+ 
+     case DRUPAL_BOOTSTRAP_SESSION:
++      if (function_exists('sb_stagemarker_message')) sb_stagemarker_message('BEFORE DRUPAL_BOOTSTRAP_SESSION');
++
+       require_once variable_get('session_inc', './includes/session.inc');
+       drupal_session_initialize();
+       break;
+ 
+     case DRUPAL_BOOTSTRAP_LATE_PAGE_CACHE:
++      if (function_exists('sb_stagemarker_message')) sb_stagemarker_message('BEFORE DRUPAL_BOOTSTRAP_LATE_PAGE_CACHE');
++
+       // Initialize configuration variables, using values from settings.php if available.
+       $conf = variable_init(isset($conf) ? $conf : array());
+ 
+@@ -1616,18 +1622,26 @@ function _drupal_bootstrap($phase) {
+       break;
+ 
+     case DRUPAL_BOOTSTRAP_LANGUAGE:
++      if (function_exists('sb_stagemarker_message')) sb_stagemarker_message('BEFORE DRUPAL_BOOTSTRAP_LANGUAGE');
++
+       drupal_init_language();
+       break;
+ 
+     case DRUPAL_BOOTSTRAP_PATH:
++      if (function_exists('sb_stagemarker_message')) sb_stagemarker_message('BEFORE DRUPAL_BOOTSTRAP_PATH');
++
+       require_once './includes/path.inc';
+       // Initialize $_GET['q'] prior to loading modules and invoking hook_init().
+       drupal_init_path();
+       break;
+ 
+     case DRUPAL_BOOTSTRAP_FULL:
++      if (function_exists('sb_stagemarker_message')) sb_stagemarker_message('BEFORE DRUPAL_BOOTSTRAP_FULL');
++
+       require_once './includes/common.inc';
+       _drupal_bootstrap_full();
++
++      if (function_exists('sb_stagemarker_message')) sb_stagemarker_message('AFTER DRUPAL_BOOTSTRAP_FULL');
+       break;
+   }
+ }

@@ -1,5 +1,5 @@
 name = Stage markers
 description = Write marks to watchdog or devel's query log at the beginning and end of each run stage of page execution.
-core = 7.x
+core = 6.x
 package = development
 

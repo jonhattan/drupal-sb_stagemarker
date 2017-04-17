@@ -1,0 +1,29 @@
+diff --git a/includes/view.inc b/includes/view.inc
+index 57a4fde..b653210 100644
+--- a/includes/view.inc
++++ b/includes/view.inc
+@@ -784,6 +784,7 @@ class view extends views_db_object {
+           foreach ($args as $id => $arg) {
+             $args[$id] = str_replace(array_keys($replacements), $replacements, $arg);
+           }
++          sb_stagemarker_message("VIEWS ARGUMENTS FOR " . $this->name . ": " . var_export($args, TRUE));
+         }
+ 
+         // Allow for a view to query an external database.
+@@ -1337,6 +1338,8 @@ class view extends views_db_object {
+    * @return A view object or NULL if it was not available.
+    */
+   public static function &load($arg, $reset = FALSE) {
++    sb_stagemarker_message("VIEWS LOAD $arg");
++
+     static $cache = array();
+ 
+     // We want a NULL value to return TRUE here, so we can't use isset() or empty().
+@@ -1637,6 +1640,7 @@ class view extends views_db_object {
+     if (isset($this->query)) {
+       unset($this->query);
+     }
++    sb_stagemarker_message("VIEWS DESTROY $this->name");
+   }
+ 
+   /**

@@ -26,10 +26,25 @@ function sb_stagemarker_message($msg) {
   $mem_usage = round(memory_get_usage() / 1024 / 1024, 2);
   $mem_peak = round(memory_get_peak_usage(TRUE) / 1024 / 1024, 2);
   $msg .= " | Execution time: $time ms | Memory usage: $mem_usage MB | Memory peak: $mem_peak MB";
-  watchdog('STAGEMARKER', $msg);
 
-  if (variable_get('devel_query_display', FALSE) && variable_get('devel_query_sort') == 0) {
+  // watchdog() relies on module_implements() but it is not available
+  // in early stages.
+  if (function_exists('module_implements')) {
+    watchdog('stagemarker', $msg);
+  }
+
+  if (variable_get('devel_query_display', 0) && variable_get('devel_query_sort', 0) == 0) {
     db_query("SELECT 'STAGEMARKER: $msg'");
   }
+}
+
+/**
+ * Discern if $hook has to be observed.
+ */
+function sb_stagemarker_observe($hook) {
+  $observed = array();
+  #$observed['init'] = TRUE;
+  $observed['block'] = TRUE;
+  return isset($observed[$hook]);
 }
 

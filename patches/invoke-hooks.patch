@@ -1,0 +1,32 @@
+diff --git a/includes/module.inc b/includes/module.inc
+index 7958367..456a62f 100644
+--- a/includes/module.inc
++++ b/includes/module.inc
+@@ -473,7 +473,10 @@ function module_invoke() {
+   unset($args[0], $args[1]);
+   $function = $module .'_'. $hook;
+   if (module_hook($module, $hook)) {
+-    return call_user_func_array($function, $args);
++    if (function_exists('sb_stagemarker_before_invoke')) { sb_stagemarker_before_invoke($hook, $module); }
++    $result = call_user_func_array($function, $args);
++    if (function_exists('sb_stagemarker_after_invoke')) { sb_stagemarker_after_invoke($hook, $module); }
++    return $result;
+   }
+ }
+ /**
+@@ -493,6 +496,7 @@ function module_invoke_all() {
+   unset($args[0]);
+   $return = array();
+   foreach (module_implements($hook) as $module) {
++    if (function_exists('sb_stagemarker_before_invoke')) { sb_stagemarker_before_invoke($hook, $module); }
+     $function = $module .'_'. $hook;
+     $result = call_user_func_array($function, $args);
+     if (isset($result) && is_array($result)) {
+@@ -501,6 +505,7 @@ function module_invoke_all() {
+     else if (isset($result)) {
+       $return[] = $result;
+     }
++    if (function_exists('sb_stagemarker_after_invoke')) { sb_stagemarker_after_invoke($hook, $module); }
+   }
+ 
+   return $return;

@@ -1,17 +1,29 @@
 <?php
 
 /**
- * Implements hook_module_implements_alter().
- *
- * Place all our hook implementations at the beginning.
+ * 
  */
-function sb_stagemarker_before_module_implements_alter(&$implementations, $hook) {
-  $self = 'sb_stagemarker_before';
-  if (isset($implementations[$self])) {
-    $group = $implementations[$self];
-    unset($implementations[$self]);
-    $implementations = array($self => $group) + $implementations;
+function sb_stagemarker_before_invoke($hook, $module) {
+  // May be too early. Modules hasn't been included yet.
+  require_once dirname(__FILE__) . '/sb_stagemarker.module';
+
+  if (sb_stagemarker_observe($hook)) {
+    $function = $module .'_'. $hook;
+    timer_start("stagemarker_$function");
+    sb_stagemarker_message("BEFORE INVOKE $hook $module");
   }
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ *
+ */
+function sb_stagemarker_before_theme_registry_alter(&$items) {
+  // Ensure our preprocess_page is run the first.
+  $hook = 'sb_stagemarker_before_preprocess_page';
+  $key = array_search($hook, $items['page']['preprocess functions']);
+  unset($items['page']['preprocess functions'][$key]);
+  array_unshift($items['page']['preprocess functions'], $hook);
 }
 
 /**
@@ -21,6 +33,9 @@ function sb_stagemarker_before_boot() {
   // It's too early. Modules hasn't been included yet.
   require_once dirname(__FILE__) . '/sb_stagemarker.module';
 
+  #TODO# Check module is not being enabled? See https://www.drupal.org/node/2324587
+
+  timer_start('stagemarker_boot');
   sb_stagemarker_message("BEFORE HOOK BOOT");
 }
 
@@ -28,22 +43,65 @@ function sb_stagemarker_before_boot() {
  * Implements hook_init().
  */
 function sb_stagemarker_before_init() {
+  timer_start('stagemarker_init');
   sb_stagemarker_message("BEFORE HOOK INIT");
 }
 
 /**
- * Implements hook_page_build().
- *
- * @see drupal_render_page().
+ * Implements hook_cron().
  */
-function sb_stagemarker_before_page_build() {
-  sb_stagemarker_message("BEFORE HOOK PAGE BUILD");
+function sb_stagemarker_before_cron() {
+  timer_start('stagemarker_cron');
+  sb_stagemarker_message("BEFORE HOOK CRON");
+}
+
+/**
+ * Implements hook_preprocess_blocks().
+ */
+function sb_stagemarker_before_preprocess_blocks($region) {
+  timer_start('stagemarker_preprocess_block');
+  sb_stagemarker_message("BEFORE HOOK PREPROCESS BLOCKS ($region)");
+}
+
+/**
+ * Implements hook_user().
+ */
+function sb_stagemarker_before_user($op, &$edit, &$account, $category = NULL) {
+  $id = $op . ' uid: ' . $account->uid;
+  timer_start($id);
+  sb_stagemarker_message("BEFORE HOOK USER ($id)");
+}
+
+/**
+ * Implements hook_nodeapi().
+ */
+function sb_stagemarker_before_nodeapi(&$node, $op) {
+  $id = $op . ' nid: ' . $node->nid;
+  timer_start($id);
+  sb_stagemarker_message("BEFORE HOOK NODEAPI ($id)");
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function sb_stagemarker_before_preprocess_page() {
+  timer_start('stagemarker_preprocess_page');
+  sb_stagemarker_message("BEFORE HOOK PREPROCESS PAGE");
+}
+
+/**
+ * Implements hook_footer().
+ */
+function sb_stagemarker_before_footer() {
+  timer_start('stagemarker_footer');
+  sb_stagemarker_message("BEFORE HOOK FOOTER");
 }
 
 /**
  * Implements hook_exit().
  */
 function sb_stagemarker_before_exit() {
+  timer_start('stagemarker_exit');
   sb_stagemarker_message("BEFORE HOOK EXIT");
 }
 

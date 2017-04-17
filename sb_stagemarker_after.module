@@ -1,17 +1,26 @@
 <?php
 
 /**
- * Implements hook_module_implements_alter().
  *
- * Place all our hook implementations at the end.
  */
-function sb_stagemarker_after_module_implements_alter(&$implementations, $hook) {
-  $self = 'sb_stagemarker_after';
-  if (isset($implementations[$self])) {
-    $group = $implementations[$self];
-    unset($implementations[$self]);
-    $implementations[$self] = $group;
+function sb_stagemarker_after_invoke($hook, $module) {
+  if (sb_stagemarker_observe($hook)) {
+    $function = $module .'_'. $hook;
+    $time = timer_read("stagemarker_$function");
+    sb_stagemarker_message("AFTER INVOKE $hook $module [${time}ms]");
   }
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function sb_stagemarker_after_theme_registry_alter(&$items) {
+
+  // Ensure our preprocess_page is run the last.
+  $hook = 'sb_stagemarker_after_preprocess_page';
+  $key = array_search($hook, $items['page']['preprocess functions']);
+  unset($items['page']['preprocess functions'][$key]);
+  $items['page']['preprocess functions'][] = $hook;
 }
 
 /**
@@ -21,47 +30,85 @@ function sb_stagemarker_after_boot() {
   // It's too early. Modules hasn't been included yet.
   require_once dirname(__FILE__) . '/sb_stagemarker.module';
 
-  sb_stagemarker_message("AFTER HOOK BOOT");
+  #TODO# Check module is not being enabled? See https://www.drupal.org/node/2324587
+
+  $time = timer_read('stagemarker_boot');
+  sb_stagemarker_message("AFTER HOOK BOOT [${time}ms]");
 }
 
 /**
  * Implements hook_init().
  */
 function sb_stagemarker_after_init() {
-  sb_stagemarker_message("AFTER HOOK INIT");
+  $time = timer_read('stagemarker_init');
+  sb_stagemarker_message("AFTER HOOK INIT [${time}ms]");
 }
 
 /**
- * Implements hook_page_delivery_callback_alter().
- *
- * @see drupal_deliver_page().
+ * Implements hook_user().
  */
-function sb_stagemarker_after_page_delivery_callback_alter() {
-  sb_stagemarker_message("AFTER MENU CALLBACK EXECUTION");
+function sb_stagemarker_after_user($op, &$edit, &$account, $category = NULL) {
+  $id = $op . ' uid: ' . $account->uid;
+  $time = timer_read($id);
+  sb_stagemarker_message("AFTER HOOK USER ($id) [${time}ms]");
 }
 
 /**
- * Implements hook_page_build().
- *
- * @see drupal_render_page().
+ * Implements hook_nodeapi().
  */
-function sb_stagemarker_after_page_build() {
-  sb_stagemarker_message("AFTER HOOK PAGE BUILD - BEFORE PAGE ALTER");
+function sb_stagemarker_after_nodeapi(&$node, $op) {
+  $id = $op . ' nid: ' . $node->nid;
+  $time = timer_read($id);
+  sb_stagemarker_message("AFTER HOOK NODEAPI ($id) [${time}ms]");
 }
 
 /**
- * Implements hook_page_alter().
- *
- * @see drupal_render_page().
+ * Implements hook_views_post_render().
  */
-function sb_stagemarker_after_page_alter() {
-  sb_stagemarker_message("AFTER PAGE ALTER - BEFORE RENDER");
+function sb_stagemarker_after_views_post_render(&$view, &$output, &$cache) {
+  $id = $view->name .'-'. $view->current_display;
+  $e = $view->execute_time;
+  $b = $view->build_time;
+  sb_stagemarker_message("VIEW $id [ex: ${e}ms; build: ${b}ms; render: ?] ");
+}
+
+/**
+ * Implements hook_cron().
+ */
+function sb_stagemarker_after_cron() {
+  $time = timer_read('stagemarker_cron');
+  sb_stagemarker_message("AFTER HOOK CRON [${time}ms]");
+}
+
+/**
+ * Implements hook_preprocess_blocks().
+ */
+function sb_stagemarker_after_preprocess_blocks($region) {
+  $time = timer_read('stagemarker_preprocess_blocks');
+  sb_stagemarker_message("AFTER HOOK PREPROCESS BLOCKS ($region) [${time}ms]");
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function sb_stagemarker_after_preprocess_page() {
+  $time = timer_read('stagemarker_preprocess_page');
+  sb_stagemarker_message("AFTER HOOK PREPROCESS PAGE [${time}ms]");
+}
+
+/**
+ * Implements hook_footer().
+ */
+function sb_stagemarker_after_footer() {
+  $time = timer_read('stagemarker_footer');
+  sb_stagemarker_message("AFTER HOOK FOOTER [${time}ms]");
 }
 
 /**
  * Implements hook_exit().
  */
 function sb_stagemarker_after_exit() {
-  sb_stagemarker_message("AFTER HOOK EXIT");
+  $time = timer_read('stagemarker_exit');
+  sb_stagemarker_message("AFTER HOOK EXIT [${time}ms]");
 }
 

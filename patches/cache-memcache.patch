@@ -1,0 +1,31 @@
+diff --git a/memcache.inc b/memcache.inc
+index 9f037b8..db92f5d 100644
+--- a/memcache.inc
++++ b/memcache.inc
+@@ -31,6 +31,8 @@ define('MEMCACHE_CONTENT_FLUSH', 'MEMCACHE_CONTENT_FLUSH');
+  *   'cache_menu', 'cache_page', or 'cache' for the default cache.
+  */
+ function cache_get($cid, $table = 'cache') {
++  if (function_exists('sb_stagemarker_message')) sb_stagemarker_message("CACHE GET - table $table, cid $cid");
++
+   // Handle excluded bins first.
+   $bins = variable_get('memcache_bins', array());
+   if (!is_null($table) && isset($bins[$table]) && $bins[$table] == 'database') {
+@@ -172,6 +174,8 @@ function cache_get($cid, $table = 'cache') {
+  *   A string containing HTTP header information for cached pages.
+  */
+ function cache_set($cid, $data, $table = 'cache', $expire = CACHE_PERMANENT, $headers = NULL) {
++  if (function_exists('sb_stagemarker_message')) sb_stagemarker_message("CACHE SET - table:$table, cid:$cid");
++
+   // Handle database fallback first.
+   $bins = variable_get('memcache_bins', array());
+   if (!is_null($table) && isset($bins[$table]) && $bins[$table] == 'database') {
+@@ -235,6 +239,8 @@ function cache_set($cid, $data, $table = 'cache', $expire = CACHE_PERMANENT, $he
+  *   match. If '*' is given as $cid, the table $table will be emptied.
+  */
+ function cache_clear_all($cid = NULL, $table = NULL, $wildcard = FALSE) {
++  if (function_exists('sb_stagemarker_message')) sb_stagemarker_message("CACHE CLEAR ALL - table:$table, cid:$cid");
++
+   // Handle database fallback first.
+   $bins = variable_get('memcache_bins', array());
+   if (!is_null($table) && isset($bins[$table]) && $bins[$table] == 'database') {
