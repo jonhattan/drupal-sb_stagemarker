@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Place all our hook implementations at the end.
+ */
+function sb_stagemarker_after_module_implements_alter(&$implementations, $hook) {
+  $self = 'sb_stagemarker_after';
+  if (isset($implementations[$self])) {
+    $group = $implementations[$self];
+    unset($implementations[$self]);
+    $implementations[$self] = $group;
+  }
+}
+
+/**
+ * Implements hook_boot().
+ */
+function sb_stagemarker_after_boot() {
+  // It's too early. Modules hasn't been included yet.
+  require_once dirname(__FILE__) . '/sb_stagemarker.module';
+
+  sb_stagemarker_message("AFTER HOOK BOOT");
+}
+
+/**
+ * Implements hook_init().
+ */
+function sb_stagemarker_after_init() {
+  sb_stagemarker_message("AFTER HOOK INIT");
+}
+
+/**
+ * Implements hook_page_delivery_callback_alter().
+ *
+ * @see drupal_deliver_page().
+ */
+function sb_stagemarker_after_page_delivery_callback_alter() {
+  sb_stagemarker_message("AFTER MENU CALLBACK EXECUTION");
+}
+
+/**
+ * Implements hook_page_build().
+ *
+ * @see drupal_render_page().
+ */
+function sb_stagemarker_after_page_build() {
+  sb_stagemarker_message("AFTER HOOK PAGE BUILD - BEFORE PAGE ALTER");
+}
+
+/**
+ * Implements hook_page_alter().
+ *
+ * @see drupal_render_page().
+ */
+function sb_stagemarker_after_page_alter() {
+  sb_stagemarker_message("AFTER PAGE ALTER - BEFORE RENDER");
+}
+
+/**
+ * Implements hook_exit().
+ */
+function sb_stagemarker_after_exit() {
+  sb_stagemarker_message("AFTER HOOK EXIT");
+}
+

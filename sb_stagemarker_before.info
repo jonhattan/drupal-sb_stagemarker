@@ -1,0 +1,5 @@
+name = Stage markers at the beginning of hooks
+core = 7.x
+dependencies[] = sb_stagemarker
+package = development
+

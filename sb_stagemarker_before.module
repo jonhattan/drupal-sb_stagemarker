@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Place all our hook implementations at the beginning.
+ */
+function sb_stagemarker_before_module_implements_alter(&$implementations, $hook) {
+  $self = 'sb_stagemarker_before';
+  if (isset($implementations[$self])) {
+    $group = $implementations[$self];
+    unset($implementations[$self]);
+    $implementations = array($self => $group) + $implementations;
+  }
+}
+
+/**
+ * Implements hook_boot().
+ */
+function sb_stagemarker_before_boot() {
+  // It's too early. Modules hasn't been included yet.
+  require_once dirname(__FILE__) . '/sb_stagemarker.module';
+
+  sb_stagemarker_message("BEFORE HOOK BOOT");
+}
+
+/**
+ * Implements hook_init().
+ */
+function sb_stagemarker_before_init() {
+  sb_stagemarker_message("BEFORE HOOK INIT");
+}
+
+/**
+ * Implements hook_page_build().
+ *
+ * @see drupal_render_page().
+ */
+function sb_stagemarker_before_page_build() {
+  sb_stagemarker_message("BEFORE HOOK PAGE BUILD");
+}
+
+/**
+ * Implements hook_exit().
+ */
+function sb_stagemarker_before_exit() {
+  sb_stagemarker_message("BEFORE HOOK EXIT");
+}
+
