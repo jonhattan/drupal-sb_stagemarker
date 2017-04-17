@@ -21,6 +21,8 @@ function sb_stagemarker_after_boot() {
   // It's too early. Modules hasn't been included yet.
   require_once dirname(__FILE__) . '/sb_stagemarker.module';
 
+  #TODO# Check module is not being enabled? See https://www.drupal.org/node/2324587
+
   sb_stagemarker_message("AFTER HOOK BOOT");
 }
 
