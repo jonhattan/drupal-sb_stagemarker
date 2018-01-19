@@ -40,6 +40,7 @@ function sb_stagemarker_observe($hook) {
   static $observed = NULL;
   if (is_null($observed)) {
     $observed = variable_get('sb_stagemarker_observed_hooks', array());
+    $observed = array_combine($observed, $observed);
   }
   return isset($observed[$hook]);
 }
