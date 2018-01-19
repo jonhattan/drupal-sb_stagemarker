@@ -51,6 +51,14 @@ function sb_stagemarker_before_init() {
 }
 
 /**
+ * Implements hook_cron().
+ */
+function sb_stagemarker_before_cron() {
+  timer_start('stagemarker_cron');
+  sb_stagemarker_message("BEFORE HOOK CRON");
+}
+
+/**
  * Implements hook_page_build().
  *
  * @see drupal_render_page().

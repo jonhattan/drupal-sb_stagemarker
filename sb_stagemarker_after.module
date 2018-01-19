@@ -49,6 +49,14 @@ function sb_stagemarker_after_init() {
 }
 
 /**
+ * Implements hook_cron().
+ */
+function sb_stagemarker_after_cron() {
+  $time = timer_read('stagemarker_cron');
+  sb_stagemarker_message("AFTER HOOK CRON [${time}ms]");
+}
+
+/**
  * Implements hook_page_delivery_callback_alter().
  *
  * @see drupal_deliver_page().
