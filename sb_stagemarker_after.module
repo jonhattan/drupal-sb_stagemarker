@@ -20,7 +20,7 @@ function sb_stagemarker_after_module_implements_alter(&$implementations, $hook) 
  * @see sb_stagemarker_observe()
  */
 function sb_stagemarker_after_invoke($hook, $module) {
-  if (sb_stagemarker_observe($hook)) {
+  if (sb_stagemarker_observe($hook) && !(strpos($module, 'sb_stagemarker') === 0)) {
     $function = $module .'_'. $hook;
     $time = timer_read("stagemarker_$function");
     sb_stagemarker_message("AFTER  INVOKE $hook $module [${time}ms]");

@@ -22,7 +22,7 @@ function sb_stagemarker_before_module_implements_alter(&$implementations, $hook)
 function sb_stagemarker_before_invoke($hook, $module) {
   // May be too early. Modules hasn't been included yet.
   require_once dirname(__FILE__) . '/sb_stagemarker.module';
-  if (sb_stagemarker_observe($hook)) {
+  if (sb_stagemarker_observe($hook) && !(strpos($module, 'sb_stagemarker') === 0)) {
     $function = $module .'_'. $hook;
     $time = timer_start("stagemarker_$function");
     sb_stagemarker_message("BEFORE INVOKE $hook $module");
