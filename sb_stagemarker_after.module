@@ -36,14 +36,16 @@ function sb_stagemarker_after_boot() {
 
   #TODO# Check module is not being enabled? See https://www.drupal.org/node/2324587
 
-  sb_stagemarker_message("AFTER HOOK BOOT");
+  $time = timer_read('stagemarker_boot');
+  sb_stagemarker_message("AFTER HOOK BOOT [${time}ms]");
 }
 
 /**
  * Implements hook_init().
  */
 function sb_stagemarker_after_init() {
-  sb_stagemarker_message("AFTER HOOK INIT");
+  $time = timer_read('stagemarker_init');
+  sb_stagemarker_message("AFTER HOOK INIT [${time}ms]");
 }
 
 /**
@@ -61,7 +63,8 @@ function sb_stagemarker_after_page_delivery_callback_alter() {
  * @see drupal_render_page().
  */
 function sb_stagemarker_after_page_build() {
-  sb_stagemarker_message("AFTER HOOK PAGE BUILD - BEFORE PAGE ALTER");
+  $time = timer_read('stagemarker_page_build');
+  sb_stagemarker_message("AFTER HOOK PAGE BUILD [${time}ms]");
 }
 
 /**
@@ -70,7 +73,8 @@ function sb_stagemarker_after_page_build() {
  * @see drupal_render_page().
  */
 function sb_stagemarker_after_page_alter() {
-  sb_stagemarker_message("AFTER PAGE ALTER - BEFORE RENDER");
+  $time = timer_read('stagemarker_page_alter');
+  sb_stagemarker_message("AFTER PAGE ALTER [${time}ms]");
 }
 
 /**

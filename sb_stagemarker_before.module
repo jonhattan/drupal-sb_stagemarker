@@ -3,7 +3,7 @@
 /**
  * Implements hook_module_implements_alter().
  *
- * Place all our hook implementations at the beginning.
+ * Places all our hook implementations at the beginning.
  */
 function sb_stagemarker_before_module_implements_alter(&$implementations, $hook) {
   $self = 'sb_stagemarker_before';
@@ -38,6 +38,7 @@ function sb_stagemarker_before_boot() {
 
   #TODO# Check module is not being enabled? See https://www.drupal.org/node/2324587
 
+  timer_start('stagemarker_boot');
   sb_stagemarker_message("BEFORE HOOK BOOT");
 }
 
@@ -45,6 +46,7 @@ function sb_stagemarker_before_boot() {
  * Implements hook_init().
  */
 function sb_stagemarker_before_init() {
+  timer_start('stagemarker_init');
   sb_stagemarker_message("BEFORE HOOK INIT");
 }
 
@@ -54,13 +56,25 @@ function sb_stagemarker_before_init() {
  * @see drupal_render_page().
  */
 function sb_stagemarker_before_page_build() {
+  timer_start('stagemarker_page_build');
   sb_stagemarker_message("BEFORE HOOK PAGE BUILD");
+}
+
+/**
+ * Implements hook_page_alter().
+ *
+ * @see drupal_render_page().
+ */
+function sb_stagemarker_before_page_alter() {
+  timer_start('stagemarker_page_alter');
+  sb_stagemarker_message("BEFORE PAGE ALTER");
 }
 
 /**
  * Implements hook_exit().
  */
 function sb_stagemarker_before_exit() {
+  timer_start('stagemarker_exit');
   sb_stagemarker_message("BEFORE HOOK EXIT");
 }
 
