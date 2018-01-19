@@ -49,6 +49,3 @@ index e42f542..203d4d6 100644
            break;
        }
      }
-diff --git a/sites/all/modules/features/ag_search/img/loader.gif b/sites/all/modules/features/ag_search/img/loader.gif
-old mode 100755
-new mode 100644
