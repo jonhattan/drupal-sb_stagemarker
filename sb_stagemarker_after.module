@@ -57,15 +57,6 @@ function sb_stagemarker_after_cron() {
 }
 
 /**
- * Implements hook_page_delivery_callback_alter().
- *
- * @see drupal_deliver_page().
- */
-function sb_stagemarker_after_page_delivery_callback_alter() {
-  sb_stagemarker_message("AFTER  MENU CALLBACK EXECUTION");
-}
-
-/**
  * Implements hook_page_build().
  *
  * @see drupal_render_page().

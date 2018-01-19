@@ -10,12 +10,15 @@
  * menu_execute_active_handler()
  *   -- execute menu callback    <-- main page content
  *   drupal_deliver_page()
- *   drupal_deliver_html_page()
- *     drupal_render_page()
- *       hook_page_build()       <-- blocks ...
- *       hook_page_alter()
- *       drupal_render()
- *   drupal_page_footer()
+ *     drupal_deliver_html_page()
+ *       drupal_render_page()
+ *         hook_page_build()     <-- blocks ...
+ *         hook_page_alter()
+ *         drupal_render()
+ *     drupal_page_footer()
+ *       hook_exit()
+ *       -- write caches
+ *       -- run cron
  */
 
 /**
@@ -44,3 +47,29 @@ function sb_stagemarker_observe($hook) {
   }
   return isset($observed[$hook]);
 }
+
+/**
+ * Implements hook_menu_site_status_alter().
+ *
+ * Last hook available before calling the page callback function.
+ *
+ * @see menu_execute_active_handler().
+ */
+function sb_stagemarker_menu_site_status_alter() {
+  timer_start('stagemarker_page_callback');
+  sb_stagemarker_message("BEFORE MENU CALLBACK EXECUTION");
+}
+
+/**
+ * Implements hook_page_delivery_callback_alter().
+ *
+ * First hook available after calling the page callback function.
+ *
+ * @see menu_execute_active_handler().
+ * @see drupal_deliver_page().
+ */
+function sb_stagemarker_page_delivery_callback_alter() {
+  $time = timer_read('stagemarker_page_callback');
+  sb_stagemarker_message("AFTER  MENU CALLBACK EXECUTION [${time}ms]");
+}
+
