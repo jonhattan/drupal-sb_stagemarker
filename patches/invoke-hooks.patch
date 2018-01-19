@@ -1,3 +1,18 @@
+diff --git a/includes/common.inc b/includes/common.inc
+index c97704c..3db7787 100644
+--- a/includes/common.inc
++++ b/includes/common.inc
+@@ -5875,8 +5875,10 @@ function drupal_render_page($page) {
+ 
+   // Modules can add elements to $page as needed in hook_page_build().
+   foreach (module_implements('page_build') as $module) {
++    if (function_exists('sb_stagemarker_before_invoke')) { sb_stagemarker_before_invoke('page_build', $module); }
+     $function = $module . '_page_build';
+     $function($page);
++    if (function_exists('sb_stagemarker_after_invoke')) { sb_stagemarker_after_invoke('page_build', $module); }
+   }
+   // Modules alter the $page as needed. Blocks are populated into regions like
+   // 'sidebar_first', 'footer', etc.
 diff --git a/includes/module.inc b/includes/module.inc
 index 2e25108..a9d7557 100644
 --- a/includes/module.inc
