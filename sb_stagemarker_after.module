@@ -15,6 +15,19 @@ function sb_stagemarker_after_module_implements_alter(&$implementations, $hook) 
 }
 
 /**
+ * Writes a mark after invoking an observed hook.
+ *
+ * @see sb_stagemarker_observe()
+ */
+function sb_stagemarker_after_invoke($hook, $module) {
+  if (sb_stagemarker_observe($hook)) {
+    $function = $module .'_'. $hook;
+    $time = timer_read("stagemarker_$function");
+    sb_stagemarker_message("AFTER INVOKE $hook $module [${time}ms]");
+  }
+}
+
+/**
  * Implements hook_boot().
  */
 function sb_stagemarker_after_boot() {

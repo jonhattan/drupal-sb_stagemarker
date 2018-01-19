@@ -33,3 +33,13 @@ function sb_stagemarker_message($msg) {
   }
 }
 
+/**
+ *  * Discern if $hook has to be observed.
+ *   */
+function sb_stagemarker_observe($hook) {
+  static $observed = NULL;
+  if (is_null($observed)) {
+    $observed = variable_get('sb_stagemarker_observed_hooks', array());
+  }
+  return isset($observed[$hook]);
+}

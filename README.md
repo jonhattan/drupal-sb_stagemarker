@@ -36,6 +36,17 @@ $conf['devel_query_sort'] = 0;
 
 $conf['dev_mem'] = 1;
 $conf['dev_timer'] = 1;
+
+// Hooks to observe. See patches/invoke-hooks.patch
+$conf['sb_stagemarker_observed_hooks'] = array(
+#  'boot',
+#  'init',
+#  'page_build',
+#  'hook_block_view',
+#  'hook_block_view_alter',
+#  'page_alter',
+#  'exit',
+);
 ```
 
 ## Patches
@@ -47,6 +58,10 @@ Apply them at your discretion.
 ### bootstrap.patch
 
 Writes a mark before each bootstrap phase and after the last phase (`DRUPAL_BOOTSTRAP_FULL`).
+
+### invoke-hooks.patch
+
+Writes a mark before and after invoking hooks. Acts only on observed hooks. See `sb_stagemarker_observed_hooks` variable.
 
 
 ## Viewports
