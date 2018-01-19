@@ -38,6 +38,16 @@ $conf['dev_mem'] = 1;
 $conf['dev_timer'] = 1;
 ```
 
+## Patches
+
+Some stages can't be instrumented without patching core. Some patches are provided in `patches/*` folder.
+
+Apply them at your discretion.
+
+### bootstrap.patch
+
+Writes a mark before each bootstrap phase and after the last phase (`DRUPAL_BOOTSTRAP_FULL`).
+
 
 ## Viewports
 
