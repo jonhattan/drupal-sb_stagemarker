@@ -23,7 +23,7 @@ function sb_stagemarker_after_invoke($hook, $module) {
   if (sb_stagemarker_observe($hook)) {
     $function = $module .'_'. $hook;
     $time = timer_read("stagemarker_$function");
-    sb_stagemarker_message("AFTER INVOKE $hook $module [${time}ms]");
+    sb_stagemarker_message("AFTER  INVOKE $hook $module [${time}ms]");
   }
 }
 
@@ -37,7 +37,7 @@ function sb_stagemarker_after_boot() {
   #TODO# Check module is not being enabled? See https://www.drupal.org/node/2324587
 
   $time = timer_read('stagemarker_boot');
-  sb_stagemarker_message("AFTER HOOK BOOT [${time}ms]");
+  sb_stagemarker_message("AFTER  HOOK BOOT [${time}ms]");
 }
 
 /**
@@ -45,7 +45,7 @@ function sb_stagemarker_after_boot() {
  */
 function sb_stagemarker_after_init() {
   $time = timer_read('stagemarker_init');
-  sb_stagemarker_message("AFTER HOOK INIT [${time}ms]");
+  sb_stagemarker_message("AFTER  HOOK INIT [${time}ms]");
 }
 
 /**
@@ -53,7 +53,7 @@ function sb_stagemarker_after_init() {
  */
 function sb_stagemarker_after_cron() {
   $time = timer_read('stagemarker_cron');
-  sb_stagemarker_message("AFTER HOOK CRON [${time}ms]");
+  sb_stagemarker_message("AFTER  HOOK CRON [${time}ms]");
 }
 
 /**
@@ -62,7 +62,7 @@ function sb_stagemarker_after_cron() {
  * @see drupal_deliver_page().
  */
 function sb_stagemarker_after_page_delivery_callback_alter() {
-  sb_stagemarker_message("AFTER MENU CALLBACK EXECUTION");
+  sb_stagemarker_message("AFTER  MENU CALLBACK EXECUTION");
 }
 
 /**
@@ -72,7 +72,7 @@ function sb_stagemarker_after_page_delivery_callback_alter() {
  */
 function sb_stagemarker_after_page_build() {
   $time = timer_read('stagemarker_page_build');
-  sb_stagemarker_message("AFTER HOOK PAGE BUILD [${time}ms]");
+  sb_stagemarker_message("AFTER  HOOK PAGE BUILD [${time}ms]");
 }
 
 /**
@@ -82,13 +82,14 @@ function sb_stagemarker_after_page_build() {
  */
 function sb_stagemarker_after_page_alter() {
   $time = timer_read('stagemarker_page_alter');
-  sb_stagemarker_message("AFTER PAGE ALTER [${time}ms]");
+  sb_stagemarker_message("AFTER  PAGE ALTER [${time}ms]");
 }
 
 /**
  * Implements hook_exit().
  */
 function sb_stagemarker_after_exit() {
-  sb_stagemarker_message("AFTER HOOK EXIT");
+  $time = timer_read('stagemarker_exit');
+  sb_stagemarker_message("AFTER  HOOK EXIT [${time}ms]");
 }
 

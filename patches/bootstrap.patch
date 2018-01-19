@@ -45,7 +45,7 @@ index e42f542..203d4d6 100644
 +          if (function_exists('sb_stagemarker_message')) sb_stagemarker_message('BEFORE DRUPAL_BOOTSTRAP_FULL');
            require_once DRUPAL_ROOT . '/includes/common.inc';
            _drupal_bootstrap_full();
-+          if (function_exists('sb_stagemarker_message')) sb_stagemarker_message('AFTER DRUPAL_BOOTSTRAP_FULL');
++          if (function_exists('sb_stagemarker_message')) sb_stagemarker_message('AFTER  DRUPAL_BOOTSTRAP_FULL');
            break;
        }
      }
