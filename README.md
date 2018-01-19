@@ -42,8 +42,8 @@ $conf['sb_stagemarker_observed_hooks'] = array(
 #  'boot',
 #  'init',
 #  'page_build',
-#  'hook_block_view',
-#  'hook_block_view_alter',
+#  'block_view',
+#  'block_view_alter',
 #  'page_alter',
 #  'exit',
 );
