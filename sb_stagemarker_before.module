@@ -38,8 +38,8 @@ function sb_stagemarker_before_boot() {
 
   #TODO# Check module is not being enabled? See https://www.drupal.org/node/2324587
 
-  timer_start('stagemarker_boot');
-  sb_stagemarker_message("BEFORE HOOK BOOT");
+  #timer_start('stagemarker_boot');
+  #sb_stagemarker_message("BEFORE HOOK BOOT");
 }
 
 /**

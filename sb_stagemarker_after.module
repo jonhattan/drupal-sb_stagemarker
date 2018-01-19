@@ -36,8 +36,8 @@ function sb_stagemarker_after_boot() {
 
   #TODO# Check module is not being enabled? See https://www.drupal.org/node/2324587
 
-  $time = timer_read('stagemarker_boot');
-  sb_stagemarker_message("AFTER  HOOK BOOT [${time}ms]");
+  #$time = timer_read('stagemarker_boot');
+  #sb_stagemarker_message("AFTER  HOOK BOOT [${time}ms]");
 }
 
 /**
