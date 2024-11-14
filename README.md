@@ -33,8 +33,7 @@ $conf['devel_query_display'] = 1;
 $conf['devel_query_sort'] = 0;
 
 // Show time and memory consumption.
-
-$conf['dev_mem'] = 1;
+$conf['devel_memory'] = 1;
 $conf['dev_timer'] = 1;
 
 // Hooks to observe. See patches/invoke-hooks.patch
